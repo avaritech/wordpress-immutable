@@ -13,9 +13,17 @@ provider "aws" {
 resource "aws_instance" "TFexample" {
   ami           = "ami-0cf31d971a3ca20d6"
   instance_type = "t2.micro"
+  provisioner "local-exec" {
+    command = "echo ${aws_instance.TFexample.public_ip} > ip_address.txt"
+    }
 }
 
 
 resource "aws_eip" "ip" {
   instance = "${aws_instance.TFexample.id}"
+}
+
+
+output "ip" {
+  value = "${aws_eip.ip.public_ip}"
 }
