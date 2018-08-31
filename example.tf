@@ -108,8 +108,9 @@ resource "aws_instance" "web" {
     inline = [
       "sudo yum -y update",
       "sudo yum -y install httpd",
-      "sudo yum -y install mysql",
+      "sudo yum -y install mysql mysql-server",
       "sudo service httpd start",
+      "sudo service mysqld start"
     ]
   }
 }
