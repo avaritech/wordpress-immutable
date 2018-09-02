@@ -1,0 +1,31 @@
+---
+- name: installs httpd
+  hosts: web
+  tasks:
+   - name: apache setup
+     yum: name=httpd
+     become: true
+     become_user: root
+   - name: start apache
+     service: name=httpd state=started
+     become: true
+     become_user: root
+   - name: Install mysql
+     yum: name=mysql-server name=mysql
+     become: true
+     become_user: root
+   - name: Install the Python MySQLB module
+     pip: name=MySQL-python
+     become: true
+     become_user: root
+
+
+   - name: start mysql
+     service: name=mysqld state=started
+     become: true
+     become_user: root
+   - name: create database
+     mysql_db:
+        name: wordpress
+        state: present
+...

@@ -8,6 +8,7 @@ variable "ssh_IPs" {
   default = ["0.0.0.0/0"]
 }
 variable "private_key_path" {}
+variable "serversToManageFile" {}
 
 
 
@@ -91,31 +92,33 @@ resource "aws_key_pair" "auth" {
 
 
 resource "aws_instance" "web" {
+  #need to set tags
   ami = "ami-0b59bfac6be064b78"
   key_name = "${aws_key_pair.auth.key_name}"
   instance_type = "t2.micro"
   vpc_security_group_ids = ["${aws_security_group.default.id}"]
   subnet_id = "${aws_subnet.default.id}"
-  provisioner "local-exec" {
-    command = "echo ${aws_instance.web.public_ip} > ip_address.txt"
-    }
   provisioner "remote-exec" {
     connection {
       type = "ssh"
       user = "ec2-user"
       private_key = "${file(var.private_key_path)}"
     }
-    inline = [
-      "sudo yum -y update",
-      "sudo yum -y install httpd",
-      "sudo yum -y install mysql mysql-server",
-      "sudo service httpd start",
-      "sudo service mysqld start"
-    ]
+#    inline = [
+#      "sudo yum -y update",
+#      "sudo yum -y install httpd",
+#      "sudo yum -y install mysql mysql-server",
+#      #"sudo service httpd start",
+#      "sudo service mysqld start"
+#    ]
   }
 }
 
 resource "aws_eip" "ip" {
+provisioner "local-exec" {     # public IP is unneeded since we'll have elastic IP. commenting out for now.
+  command = "echo [web] > ${var.serversToManageFile}"
+  command = "echo ${aws_eip.ip.public_ip} >> ${var.serversToManageFile}"
+  }
   instance = "${aws_instance.web.id}"
 }
 
