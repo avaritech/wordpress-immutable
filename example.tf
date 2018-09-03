@@ -116,8 +116,8 @@ resource "aws_instance" "web" {
 
 resource "aws_eip" "ip" {
 provisioner "local-exec" {     # public IP is unneeded since we'll have elastic IP. commenting out for now.
-  command = "echo [web] > ${var.serversToManageFile}"
-  command = "echo ${aws_eip.ip.public_ip} >> ${var.serversToManageFile}"
+  #command = "echo [web] > ${var.serversToManageFile}"
+  command = "echo [web] > ${var.serversToManageFile} \necho ${aws_eip.ip.public_ip} >> ${var.serversToManageFile}"
   }
   instance = "${aws_instance.web.id}"
 }
