@@ -137,5 +137,5 @@ output "ip" {
   value = "${aws_eip.ip.public_ip}"
 }
 output "Ansible command to run"{
-  value = "ansible-playbook -i ${var.serversToManageFile} -u ec2-user -K setup-wordpress.yml --private-key ${file(var.private_key_path)}"
+  value = "ansible-playbook -i ${var.serversToManageFile} -u ec2-user -K setup-wordpress.yml --private-key ${var.private_key_path}"
 }
