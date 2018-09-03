@@ -20,9 +20,9 @@ provider "aws" {
 
 ###########VPC AND NETWORKING################
 # Create a VPC
-#resource "aws_vpc" "default" {
-#  cidr_block = "172.17.0.0/16"
-#}
+resource "aws_vpc" "default" {
+  cidr_block = "172.17.0.0/16"
+}
 
 # Create an internet gateway to give our subnet access to the outside world
 resource "aws_internet_gateway" "default" {
