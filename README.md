@@ -19,12 +19,24 @@ After importing and setting up terraform in your path (or specifying the path ma
 run
 
 terraform init
+
 terraform plan
+
 terraform build
+
+if you want to run the ansible setup only:
+
+ansible-playbook -i IPs.txt -u ec2-user -K wordpress.yml --private-key [_key file_]
+
 
 That should be it. Then simply browse to the IP address output to see your new wordpress installation
 
 ## Later versions
  Will demonstrate database and file persistence
+
  Will separate the web, DB, and front end tier (ELB)
- To include AWS monitoring setup with terraform 
+
+ To include AWS monitoring setup with terraform
+
+
+*Note: * This isn't _truly_ immutable, as you still have access to the server and could potentially make changes.

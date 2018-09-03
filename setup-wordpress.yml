@@ -1,9 +1,17 @@
 ---
-- name: installs httpd
+- name: installs httpd mysqld php and calls script to setup and configure wordpress
   hosts: web
   tasks:
    - name: apache setup
      yum: name=httpd
+     become: true
+     become_user: root
+   - name: php setup
+     yum: name=php
+     become: true
+     become_user: root
+   - name: php-mysql setup
+     yum: name=php
      become: true
      become_user: root
    - name: start apache
@@ -11,21 +19,21 @@
      become: true
      become_user: root
    - name: Install mysql
-     yum: name=mysql-server name=mysql
+     yum: name=mysql-server
      become: true
      become_user: root
-   - name: Install the Python MySQLB module
-     pip: name=MySQL-python
-     become: true
-     become_user: root
-
-
    - name: start mysql
      service: name=mysqld state=started
      become: true
      become_user: root
-   - name: create database
-     mysql_db:
-        name: wordpress
-        state: present
+   - name: copy SQL file to destination
+     copy: src=wordpress.sql dest=/home/ec2-user/wordpress.sql
+   - name: copy script
+     copy: src=setupWP.sh dest=/home/ec2-user/setupWP.sh
+   - name: script perms
+     shell: chmod +x /home/ec2-user/setupWP.sh
+   - name: run script
+     shell: /home/ec2-user/setupWP.sh
+     become: true
+     become_user: root
 ...

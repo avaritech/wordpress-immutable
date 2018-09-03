@@ -1,0 +1,4 @@
+CREATE DATABASE varDBName;
+GRANT ALL PRIVILEGES ON varDBName.* TO "varWPUser"@"localhost" IDENTIFIED BY "varPassword";
+FLUSH PRIVILEGES;
+exit
