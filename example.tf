@@ -123,6 +123,16 @@ provisioner "local-exec" {     # public IP is unneeded since we'll have elastic 
 }
 
 
+
+resource "null_resource" "ansible" {
+  triggers {
+    key = "${uuid()}"
+  }
+  provisioner "local-exec" {
+    command = "ansible-playbook -i ${var.serversToManageFile} -u ec2-user -K setup-wordpress.yml --private-key ${file(var.private_key_path)}"
+  }
+}
+
 output "ip" {
   value = "${aws_eip.ip.public_ip}"
 }
