@@ -11,7 +11,7 @@
      become: true
      become_user: root
    - name: php-mysql setup
-     yum: name=php
+     yum: name=php-mysql
      become: true
      become_user: root
    - name: start apache
